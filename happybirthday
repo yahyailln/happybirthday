@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .star {
+      position: absolute;
+      color: #fff;
+      text-shadow: 0 0 10px #fff, 0 0 20px #ffd700;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
+    }
+
+    /* التنقل بين الصفحات فترقية واحدة */
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .active-page {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Page 1 */
+    .gift-box {
+      font-size: 100px;
+      cursor: pointer;
+      transition: transform 0.3s;
+      animation: bounce 2s infinite;
+    }
+
+    .gift-box:hover {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Page 2 */
+    .friends-img {
+      width: 100%;
+      max-width: 350px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      margin-bottom: 15px;
+    }
+
+    .short-msg {
+      font-size: 1.2rem;
+      margin: 15px 0 30px 0;
+      background: rgba(0,0,0,0.2);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    .cat-btn {
+      font-size: 50px;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Page 3 */
+    .pass-box {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .pass-box input {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      text-align: center;
+      width: 150px;
+    }
+
+    .pass-box button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background: #e73c7e;
+      color: white;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .secret-content {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 15px;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .letter-box {
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: right;
+      line-height: 1.8;
+      width: 100%;
+      font-size: 1.1rem;
+      margin-top: 15px;
+      border-right: 5px solid #e73c7e;
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="stars-container" id="starsContainer"></div>
+
+  <div class="page active-page" id="page1">
+    <h1>ورك على الكادو باش تفتح المفاجأة 🎁</h1>
+    <br><br>
+    <div class="gift-box" onclick="startExperience()">🎁</div>
+  </div>
+
+  <div class="page" id="page2">
+    <h2> best friend❤️</h2>
+    <br>
+    <img src="drari.jpg" alt="جوج دراري" class="friends-img">
+    <div class="short-msg">
+      "العشران اللي ما كيتعوضوش.. دوزنا أيامات واعرة مع بعضياتنا!"
+    </div>
+    <p style="font-size: 0.9rem; margin-bottom: 10px;">كليكي على المشيشة باش تدوز لسر الألبوم 🐱</p>
+    <div class="cat-btn" onclick="goToPage('page3')">🐱</div>
+  </div>
+
+  <div class="page" id="page3">
+    <div class="pass-box" id="lockSection">
+      <h3>دخّل الكود السرّي باش تفتح الألبوم والرسالة 🔒</h3>
+      <br>
+      <input type="password" id="passInput" placeholder="أدخل الكود">
+      <button onclick="checkCode()">فتح</button>
+      <p id="errorMsg" style="color: #ff4d4d; margin-top: 10px; display: none;">الكود خاطئ!</p>
+    </div>
+
+    <div class="secret-content" id="secretContent">
+      <h2>🎉 ألبوم الذكريات 🎉</h2>
+      
+      <div class="gallery">
+        <img src="photo1.jpg" alt="Memory 1">
+        <img src="photo2.jpg" alt="Memory 2">
+        <img src="photo3.jpg" alt="Memory 3">
+      </div>
+
+      <div class="letter-box">
+        <h3>💌 رسالة خاصة:</h3>
+        <p>
+          best fiend<br>
+    </div> hade nhare rah spéciale bi nisba lia hite molato spéciale bghayte ngoulk chokrane bzzzzf 3la ayi haja zwina drtiha maeya mne nhare 3raftk fihe saraha nti binisba lia hia kolchi ou ana farhane ou bzzzzzzzzf hite 3ndi khti b7alk zwina drayba 9albk byade katbghi khire lnasse maha9oudache wara nb9a ra nwsafe fk gaema radi ngoule dk chi kamle hite nta spéciale 3la ayi wahde ou chokrane bzzzzzzzzf 3la gae lhwayje zwinine li dwzna baediyatna la fl9raya la ou hna kharjine mae baediyatna kaynine chi hwayje li dwznahe hna bjouje 3mrhome itnawe ou ba9i nchaellah ndiro maktare mohime mne hade chi kolo bghayte ngoule lk happy birthday ou kantmana lk 3ame jdide nchaellah 3amra bi tomohe ou tkouni ha9a9ti fiha gae ahdafe ou katb9Ay ndiya hia ahssane whda 3Raftha fhyati ou lah ikhalik lia
+  </div>                                       Happy birthday and many happy returns!
+
+  <script>
+    // Stars Animation
+    const starsContainer = document.getElementById('starsContainer');
+    const starIcons = ['★', '✦', '✧', '✨'];
+
+    function createStar() {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.innerText = starIcons[Math.floor(Math.random() * starIcons.length)];
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      star.style.fontSize = (Math.random() * 15 + 10) + 'px';
+      starsContainer.appendChild(star);
+      setTimeout(() => star.remove(), 5000);
+    }
+    setInterval(createStar, 150);
+
+    // Page Switcher (فنفس الصفحة بدون فتح Onglet جديد)
+    function goToPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+      document.getElementById(pageId).classList.add('active-page');
+    }
+
+    // بدء التجربة وتشغيل الموسيقى من الصفحة الأولى
+    function startExperience() {
+      const music = document.getElementById('bgMusic');
+      music.play().catch(e => console.log("Audio play error:", e));
+      goToPage('page2');
+    }
+
+    // Code Verification
+    function checkCode() {
+      const codeInput = document.getElementById('passInput').value;
+      if (codeInput === "070908) {
+        document.getElementById('lockSection').style.display = 'none';
+        document.getElementById('secretContent').style.display = 'flex';
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
